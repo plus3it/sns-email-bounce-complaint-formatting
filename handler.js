@@ -5,6 +5,9 @@ var aws = require('aws-sdk');
 var ses = new aws.SES({
   region: 'us-east-1'
 });
+var toaddress = process.env.toaddress
+var fromaddress = process.env.fromaddress
+
 
 module.exports.handler = (event, context, callback) => {
   //console.log('Received event:', JSON.stringify(event, null, 2));
@@ -57,7 +60,7 @@ function email(id, payload, status) {
   };
   const eParams = {
     Destination: {
-      ToAddresses: ["29447475+moskey71@users.noreply.github.com"]
+      ToAddresses: [toaddress]
     },
     Message: {
       Body: {
@@ -69,7 +72,7 @@ function email(id, payload, status) {
         Data: "Email " + payload.notificationType + " in Testlab"
       }
     },
-    Source: "29447475+moskey71@users.noreply.github.com"
+    Source: fromaddress
   };
   console.log('===SENDING EMAIL===');
   const email = ses.sendEmail(eParams, function(err, data) {
