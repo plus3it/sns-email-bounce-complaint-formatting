@@ -2,3 +2,5 @@
 #update the variables for your environment
 snsbouncearn: arn:aws:sns:<region>:<acct number>:bounce
 snscomplaintarn: arn:aws:sns:<region>:<acct number>:complaint
+toaddress: operations@mycompany.com
+fromaddress: noreply@mycompany.com
