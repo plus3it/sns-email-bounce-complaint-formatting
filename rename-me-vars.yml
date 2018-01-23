@@ -1,0 +1,4 @@
+#rename this file to variables.yml
+#update the variables for your environment
+snsbouncearn: arn:aws:sns:<region>:<acct number>:bounce
+snscomplaintarn: arn:aws:sns:<region>:<acct number>:complaint

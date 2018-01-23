@@ -6,7 +6,7 @@ var ses = new aws.SES({
   region: 'us-east-1'
 });
 
-exports.handler = (event, context, callback) => {
+module.exports.handler = (event, context, callback) => {
   //console.log('Received event:', JSON.stringify(event, null, 2));
   const message = JSON.parse(event.Records[0].Sns.Message);
   switch (message.notificationType) {
