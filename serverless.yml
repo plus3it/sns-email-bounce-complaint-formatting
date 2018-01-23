@@ -1,3 +1,4 @@
+service:             sns-email-bounce-complaint-formatter
 functions:
 #function name
   format-email:
@@ -9,14 +10,13 @@ functions:
 ##ARN of the topic where email complaints go
         - sns:
             arn:     ${file(variables.yml):snscomplaintarn}
-#load variables file
-#Custom:              ${file(variables.yml)}
-
-service:             sns-email-bounce-complaint-formatter
 
 provider:
   name:              aws
   runtime:           nodejs6.10
+  environment:
+    toaddress: ${file(variables.yml):toaddress}
+    fromaddress: ${file(variables.yml):fromaddress}
 
 
 # you can overwrite defaults here
