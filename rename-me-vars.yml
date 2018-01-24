@@ -9,3 +9,5 @@ snscomplaintarn: arn:aws:sns:<region>:<acct number>:complaint
 toaddress: operations@mycompany.com
 #the FROM: address for the lambda function, formatted email will be sent from this address
 fromaddress: noreply@mycompany.com
+#name of the environment which the email is for
+envname: "MyLab"

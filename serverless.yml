@@ -17,6 +17,7 @@ provider:
   environment:
     toaddress: ${file(variables.yml):toaddress}
     fromaddress: ${file(variables.yml):fromaddress}
+    envname: ${file(variables.yml):envname}
 
 
 # you can overwrite defaults here
