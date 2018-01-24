@@ -7,6 +7,7 @@ var ses = new aws.SES({
 });
 var toaddress = process.env.toaddress;
 var fromaddress = process.env.fromaddress;
+var envname = process.env.envname;
 
 module.exports.handler = (event, context, callback) => {
   //console.log('Received event:', JSON.stringify(event, null, 2));
