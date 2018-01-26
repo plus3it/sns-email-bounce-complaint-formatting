@@ -5,6 +5,7 @@ var aws = require('aws-sdk');
 var ses = new aws.SES({
   region: 'us-east-1'
 });
+/*global callback*/
 var toaddress = process.env.toaddress;
 var fromaddress = process.env.fromaddress;
 var envname = process.env.envname;
@@ -76,7 +77,7 @@ function email(id, payload, status) {
   };
   console.log('===SENDING EMAIL===');
   ses.sendEmail(eParams, function(err, data) {
-    if (err) console.log(err, err.stack); // an error occurred
+    if (err) callback(err); // an error occurred
     else console.log(data); // successful response
   });
 }
