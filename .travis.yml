@@ -1,1 +1,19 @@
-script: true
+language: bash
+
+jobs:
+  include:
+    - stage: test
+      env:
+        - JOB="JSON Lint/Format"
+      install:
+        - jq --version
+      script:
+        - make json.lint
+    - stage: test
+      env:
+        - JOB="YAML Lint"
+      install:
+        - pip install --user yamllint
+        - yamllint --version
+      script:
+        - make yaml.lint
