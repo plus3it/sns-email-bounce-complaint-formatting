@@ -66,7 +66,7 @@ function email(id, payload, status) {
     Message: {
       Body: {
         Text: {
-          Data: (item.UserId + " had an e-mail " + payload.notificationType + " from " + payload.mail.source + " at " + payload.mail.timestamp + ".  Please ask the tenant if the user's access should be removed.")
+          Data: (item.UserId + " had an e-mail " + payload.notificationType + " from " + payload.mail.source + " at " + payload.mail.timestamp + ".  Please ask the tenant if the user's access should be removed." + "\n \n \n Bounce reason:" + payload.bounce.bouncedRecipients[0].diagnosticCode )
         }
       },
       Subject: {
