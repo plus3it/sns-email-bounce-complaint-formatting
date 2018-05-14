@@ -1,5 +1,12 @@
 language: bash
 
+env:
+  global:
+    - REPO="${TRAVIS_REPO_SLUG#*/}"
+    - OWNER=plus3it
+    - DEPLOY_SLUG=$OWNER/$REPO
+    - RELEASE_VERSION=$(grep -E '^current_version' $TRAVIS_BUILD_DIR/.bumpversion.cfg | sed 's/^.*= //')
+
 jobs:
   include:
     - stage: test
