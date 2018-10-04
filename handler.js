@@ -70,7 +70,7 @@ function email(id, payload, status) {
         }
       },
       Subject: {
-        Data: "Email " + payload.notificationType + " in " + envname
+        Data: item.UserId + " Email " + payload.notificationType + " in " + envname
       }
     },
     Source: fromaddress
