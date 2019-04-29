@@ -10,6 +10,8 @@ var toaddress = process.env.toaddress;
 var fromaddress = process.env.fromaddress;
 var envname = process.env.envname;
 
+var NOTIFY_TYPES = ['Permanent']
+
 module.exports.handler = (event, context, callback) => {
   //console.log('Received event:', JSON.stringify(event, null, 2));
   const message = JSON.parse(event.Records[0].Sns.Message);
@@ -34,8 +36,11 @@ function handleBounce(message) {
 
   console.log("Message " + messageId + " bounced when sending to " + addresses.join(", ") + ". Bounce type: " + bounceType);
 
-  for (var i = 0; i < addresses.length; i++) {
-    email(addresses[i], message, "disable");
+  // Send email only if bounceType is in NOTIFY_TYPES
+  if (NOTIFY_TYPES.indexOf(bounceType) > -1) {
+    for (var i = 0; i < addresses.length; i++) {
+      email(addresses[i], message, "disable");
+    }
   }
 }
 
