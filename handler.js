@@ -10,6 +10,10 @@ var toaddress = process.env.toaddress;
 var fromaddress = process.env.fromaddress;
 var envname = process.env.envname;
 
+// See <https://docs.aws.amazon.com/ses/latest/DeveloperGuide/notification-contents.html#bounce-types>
+var NOTIFY_BOUNCETYPES = ['Permanent', 'Undetermined']
+var NOTIFY_BOUNCESUBTYPES = ['General', 'NoEmail', 'Undetermined']
+
 module.exports.handler = (event, context, callback) => {
   //console.log('Received event:', JSON.stringify(event, null, 2));
   const message = JSON.parse(event.Records[0].Sns.Message);
@@ -31,11 +35,15 @@ function handleBounce(message) {
     return recipient.emailAddress;
   });
   const bounceType = message.bounce.bounceType;
+  const bounceSubType = message.bounce.bounceSubType;
 
   console.log("Message " + messageId + " bounced when sending to " + addresses.join(", ") + ". Bounce type: " + bounceType);
 
-  for (var i = 0; i < addresses.length; i++) {
-    email(addresses[i], message, "disable");
+  // Send email only if bounceType is in NOTIFY_TYPES
+  if (NOTIFY_BOUNCETYPES.indexOf(bounceType) > -1 && NOTIFY_BOUNCESUBTYPES.indexOf(bounceSubType) > -1) {
+    for (var i = 0; i < addresses.length; i++) {
+      email(addresses[i], message, "disable");
+    }
   }
 }
 
