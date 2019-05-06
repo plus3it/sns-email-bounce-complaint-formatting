@@ -5,3 +5,6 @@ package-lock.json
 
 # Serverless directories
 .serverless
+
+# Variables
+variables.yml
