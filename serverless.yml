@@ -13,7 +13,7 @@ functions:
 
 provider:
   name:              aws
-  runtime:           nodejs8.10
+  runtime:           nodejs10.x
   environment:
     toaddress: ${file(variables.yml):toaddress}
     fromaddress: ${file(variables.yml):fromaddress}
