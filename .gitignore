@@ -1,10 +1,20 @@
-# package directories
-node_modules
-jspm_packages
-package-lock.json
+#  Local .terraform directories
+.terraform/
 
-# Serverless directories
-.serverless
+# .tfstate files
+*.tfstate
+*.tfstate.*
 
-# Variables
-variables.yml
+# .tfvars files
+*.tfvars
+
+# ignore this file
+!tfmodule-template.tf
+
+# tardigrade-ci
+tardigrade-ci/
+.tardigrade-ci
+
+# eclint
+
+.git/
