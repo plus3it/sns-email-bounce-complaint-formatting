@@ -73,8 +73,13 @@ def send_email(id, payload, status):
     ses.send_email(**email_object)
 
 
-def handle_bounce(message, **kwargs):
+def handle_bounce(
+    message, notify_bounce_types=None, notify_bounce_subtypes=None, **kwargs
+):
     log.debug("Processing bounce message")
+
+    notify_bounce_types = notify_bounce_types or []
+    notify_bounce_subtypes = notify_bounce_subtypes or []
 
     addresses = []
     for address in message["bounce"]["bouncedRecipients"]:
@@ -90,15 +95,12 @@ def handle_bounce(message, **kwargs):
         bounce_subtype,
     )
 
-    if (
-        bounce_type in kwargs["notify_bounce_types"]
-        and bounce_subtype in kwargs["notify_bounce_subtypes"]
-    ):
+    if bounce_type in notify_bounce_types and bounce_subtype in notify_bounce_subtypes:
         for email_address in addresses:
             send_email(email_address, message, "disable")
 
 
-def handle_complaint(message):
+def handle_complaint(message, **kwargs):
     log.debug("Processing complaint message")
 
     addresses = []
