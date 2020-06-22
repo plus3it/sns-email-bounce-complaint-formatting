@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "lambda" {
 }
 
 module "lambda" {
-  source = "github.com/claranet/terraform-aws-lambda"
+  source = "git::https://github.com/plus3it/terraform-aws-lambda.git?ref=v1.2.0"
 
   function_name = "${var.project_name}-bounce-complaint-handler"
   description   = "Processes ses bounce and complaint messages"
@@ -32,4 +32,30 @@ module "lambda" {
   }
 
   tags = var.tags
+}
+
+resource "aws_sns_topic_subscription" "bounce" {
+  endpoint  = module.lambda.function_arn
+  protocol  = "lambda"
+  topic_arn = var.sns_bounce_arn
+}
+
+resource "aws_sns_topic_subscription" "complaint" {
+  endpoint  = module.lambda.function_arn
+  protocol  = "lambda"
+  topic_arn = var.sns_complaint_arn
+}
+
+resource "aws_lambda_permission" "bounce" {
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda.function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = var.sns_bounce_arn
+}
+
+resource "aws_lambda_permission" "complaint" {
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda.function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = var.sns_complaint_arn
 }

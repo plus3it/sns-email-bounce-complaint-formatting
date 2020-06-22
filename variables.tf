@@ -33,3 +33,13 @@ variable "tags" {
   default     = {}
   description = "Map of tags to assign to the module resources"
 }
+
+variable "sns_bounce_arn" {
+  type        = string
+  description = "ARN of the SNS topic for email bounces"
+}
+
+variable "sns_complaint_arn" {
+  type        = string
+  description = "ARN of the SNS topic for email complaints"
+}
