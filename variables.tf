@@ -1,25 +1,11 @@
-variable "project_name" {
+variable "environment" {
   type        = string
-  default     = "example-project"
-  description = "Name of the project"
+  description = "Descriptor for the email environment"
 }
 
 variable "from_address" {
   type        = string
-  default     = "noreply@example.com"
   description = "Email address to expect bounce/complaint notifications to originate from"
-}
-
-variable "to_address" {
-  type        = string
-  default     = "help@example.com"
-  description = "Email address to send bounce/complaint notifications to"
-}
-
-variable "environment" {
-  type        = string
-  default     = "test"
-  description = "Descriptor for the email environment"
 }
 
 variable "log_level" {
@@ -28,8 +14,28 @@ variable "log_level" {
   description = "Lambda log level"
 }
 
+variable "project_name" {
+  type        = string
+  description = "Name of the project"
+}
+
+variable "sns_bounce_arn" {
+  type        = string
+  description = "ARN of the SNS topic for email bounces"
+}
+
+variable "sns_complaint_arn" {
+  type        = string
+  description = "ARN of the SNS topic for email complaints"
+}
+
 variable "tags" {
   type        = map
   default     = {}
   description = "Map of tags to assign to the module resources"
+}
+
+variable "to_address" {
+  type        = string
+  description = "Email address to send bounce/complaint notifications to"
 }

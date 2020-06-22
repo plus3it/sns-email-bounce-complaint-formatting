@@ -17,12 +17,14 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| environment | Descriptor for the email environment | `string` | `"test"` | no |
-| from\_address | Email address to expect bounce/complaint notifications to originate from | `string` | `"noreply@example.com"` | no |
+| environment | Descriptor for the email environment | `string` | n/a | yes |
+| from\_address | Email address to expect bounce/complaint notifications to originate from | `string` | n/a | yes |
+| project\_name | Name of the project | `string` | n/a | yes |
+| sns\_bounce\_arn | ARN of the SNS topic for email bounces | `string` | n/a | yes |
+| sns\_complaint\_arn | ARN of the SNS topic for email complaints | `string` | n/a | yes |
+| to\_address | Email address to send bounce/complaint notifications to | `string` | n/a | yes |
 | log\_level | Lambda log level | `string` | `"INFO"` | no |
-| project\_name | Name of the project | `string` | `"example-project"` | no |
 | tags | Map of tags to assign to the module resources | `map` | `{}` | no |
-| to\_address | Email address to send bounce/complaint notifications to | `string` | `"help@example.com"` | no |
 
 ## Outputs
 
