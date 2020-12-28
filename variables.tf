@@ -30,7 +30,7 @@ variable "sns_complaint_arn" {
 }
 
 variable "tags" {
-  type        = map
+  type        = map(any)
   default     = {}
   description = "Map of tags to assign to the module resources"
 }
