@@ -24,7 +24,7 @@ No requirements.
 | sns\_complaint\_arn | ARN of the SNS topic for email complaints | `string` | n/a | yes |
 | to\_address | Email address to send bounce/complaint notifications to | `string` | n/a | yes |
 | log\_level | Lambda log level | `string` | `"INFO"` | no |
-| tags | Map of tags to assign to the module resources | `map` | `{}` | no |
+| tags | Map of tags to assign to the module resources | `map(any)` | `{}` | no |
 
 ## Outputs
 
