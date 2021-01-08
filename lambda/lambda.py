@@ -1,12 +1,11 @@
-"""
-Lambda function used to process SES bounce and Complaint messages
-"""
+"""Lambda function used to process SES bounce and Complaint messages."""
 
-import boto3
 import collections
 import json
 import logging
 import os
+
+import boto3
 
 DEFAULT_LOG_LEVEL = logging.DEBUG
 LOG_LEVELS = collections.defaultdict(
@@ -24,15 +23,15 @@ LOG_LEVELS = collections.defaultdict(
 # different logging config
 root = logging.getLogger()
 if root.handlers:
-    for handler in root.handlers:
-        root.removeHandler(handler)
+    for log_handler in root.handlers:
+        root.removeHandler(log_handler)
 
-log_file_name = ""
+LOG_FILE_NAME = ""
 if not os.environ.get("AWS_EXECUTION_ENV"):
-    log_file_name = "ses-handler.log"
+    LOG_FILE_NAME = "ses-handler.log"
 
 logging.basicConfig(
-    filename=log_file_name,
+    filename=LOG_FILE_NAME,
     format="%(asctime)s.%(msecs)03dZ [%(name)s][%(levelname)-5s]: %(message)s",
     datefmt="%Y-%m-%dT%H:%M:%S",
     level=LOG_LEVELS[os.environ.get("LOG_LEVEL", "").lower()],
@@ -45,11 +44,12 @@ FROM_ADDRESS = os.environ.get("FROM_ADDRESS")
 ENV_NAME = os.environ.get("ENV_NAME")
 
 
-def send_email(id, payload, status):
+def send_email(email_id, payload, status):  # pylint: disable=unused-argument
+    """Send email."""
     log.debug("Sending message")
 
     email_body = (
-        f'{id} had an email {payload["notificationType"]}'
+        f'{email_id} had an email {payload["notificationType"]}'
         f' from {payload["mail"]["source"]} at {payload["mail"]["timestamp"]}.'
         f" \n"
         f" Please ask the tenant if the user's access should be removed."
@@ -60,12 +60,14 @@ def send_email(id, payload, status):
         f' {payload["notificationType"]}'
         f' reason: {payload["bounce"]["bouncedRecipients"][0]["diagnosticCode"]}'
     )
-    email_subject = f'{id} Email {payload["notificationType"]} in {ENV_NAME}'
+    email_subject = f'{email_id} Email {payload["notificationType"]} in {ENV_NAME}'
 
     email_object = {
         "Destination": {"ToAddresses": [TO_ADDRESS]},
         "Message": {
-            "Body": {"Text": {"Charset": "UTF-8", "Data": email_body},},
+            "Body": {
+                "Text": {"Charset": "UTF-8", "Data": email_body},
+            },
             "Subject": {"Charset": "UTF-8", "Data": email_subject},
         },
         "Source": FROM_ADDRESS,
@@ -75,7 +77,8 @@ def send_email(id, payload, status):
 
 def handle_bounce(
     message, notify_bounce_types=None, notify_bounce_subtypes=None, **kwargs
-):
+):  # pylint: disable=unused-argument
+    """Bounce handle for notifications."""
     log.debug("Processing bounce message")
 
     notify_bounce_types = notify_bounce_types or []
@@ -100,7 +103,8 @@ def handle_bounce(
             send_email(email_address, message, "disable")
 
 
-def handle_complaint(message, **kwargs):
+def handle_complaint(message, **kwargs):  # pylint: disable=unused-argument
+    """Handle complaint messages."""
     log.debug("Processing complaint message")
 
     addresses = []
@@ -117,7 +121,8 @@ def handle_complaint(message, **kwargs):
         send_email(email_address, message, "disable")
 
 
-def handler(event, context):
+def handler(event, context):  # pylint: disable=unused-argument
+    """Entrypoint for AWS Lambda function."""
     log.debug("received event: %s", event)
 
     message = json.loads(event["Records"][0]["Sns"]["Message"])
@@ -129,6 +134,6 @@ def handler(event, context):
     }
     try:
         return strategy[message["notificationType"]](message, **config)
-    except KeyError as e:
-        log.error("Encountered unknown message type: %s", e)
+    except KeyError as exc:
+        log.error("Encountered unknown message type: %s", exc)
         raise
