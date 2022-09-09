@@ -18,3 +18,7 @@ tardigrade-ci/
 # eclint
 
 .git/
+
+# Python auto-generated files
+__pycache__
+*.pyc
